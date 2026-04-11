@@ -1,7 +1,7 @@
 void main() {
 
   // settings
-  const appTitle = "Student Grader v1.0"
+  const appTitle = "Student Grader v1.0";
   print("==== $appTitle ====");
   final subjects = ["Math", "Science", "English", "History"];
 
