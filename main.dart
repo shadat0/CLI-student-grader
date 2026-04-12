@@ -1,3 +1,5 @@
+import 'dart:io';
+
 void main() {
 
   // settings
@@ -5,13 +7,87 @@ void main() {
   print("==== $appTitle ====");
   final subjects = ["Math", "Science", "English", "History"];
 
+  // Student data
+  List<Map<String, dynamic>> students = [
+    {
+        "Name": "Fatima",
+        "Scores": [85,92,78,88],
+        "Bonus": null,
+        "Comment": null
+    },
+    {
+        "Name": "Ali",
+        "Scores": [78, 85, 90, 82],
+        "Bonus": null,
+        "Comment": null
+    },
+    {
+        "Name": "Sara",
+        "Scores": [95, 90, 88, 92],
+        "Bonus": null,
+        "Comment": null
+    },
+    {
+        "Name": "Omar",
+        "Scores": [60, 75, 70, 65],
+        "Bonus": null,
+        "Comment": null
+    },
+  ];
+
   // Main menu
-  print('1. Add Student');
-  print('2. Record Score');
-  print('3. Add Bonus Points');
-  print('4. Add Comment');
-  print('5. View All Students');
-  print('6. View Report Card');
-  print('7. Class Summary');
-  print('8. Exit');
+  int choice;
+  do{
+print("\n");
+  print('''
+
+  1. Add Student
+  2. Record Score
+  3. Add Bonus Points
+  4. Add Comment
+  5. View All Students
+  6. View Report Card
+  7. Class Summary
+  8. Exit
+
+  ''');
+  
+  print("Choose an option: ");
+  choice = int.parse(stdin.readLineSync()!);
+
+  switch(choice){
+    case 1:
+      print("Add Student Name :");
+      var name = stdin.readLineSync()!;
+      students.add({"Name": name, "Scores": [], "Bonus": null, "Comment": null});
+      print("Student added successfully.");
+      print(students); // for testing
+      stdin.readLineSync();
+      break;
+    // case 2:
+    //   record score
+    //   break;
+    // case 3:
+    //   add bonus points
+    //   break;
+    // case 4:
+    //   add comment
+    //   break;
+    // case 5:
+    //   view all students
+    //   break;
+    // case 6:
+    //   view report card
+    //   break;
+    // case 7:
+    //   class summary
+    //   break;
+    case 8:
+      print("Exiting...");
+      break;
+    default:
+      print("Invalid choice. Please try again.");
+  }
+  }
+  while(choice != 8);
 }
