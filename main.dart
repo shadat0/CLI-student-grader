@@ -6,6 +6,8 @@ void main() {
   const appTitle = "Student Grader v1.0";
   print("==== $appTitle ====");
   final subjects = ["Math", "Science", "English", "History"];
+  var choice;
+  int? numChoice;
 
   // Student data
   List<Map<String, dynamic>> students = [
@@ -35,10 +37,8 @@ void main() {
     },
   ];
 
-  // Main menu
-  int choice;
+  // menu loop
   do{
-print("\n");
   print('''
 
   1. Add Student
@@ -50,19 +50,17 @@ print("\n");
   7. Class Summary
   8. Exit
 
+Please enter your choice: 
   ''');
   
-  print("Choose an option: ");
-  choice = int.parse(stdin.readLineSync()!);
-
-  switch(choice){
+  choice = stdin.readLineSync();
+numChoice = int.tryParse(choice ?? '');
+switch(numChoice){
     case 1:
       print("Add Student Name :");
-      var name = stdin.readLineSync()!;
+      String? name = stdin.readLineSync();
       students.add({"Name": name, "Scores": [], "Bonus": null, "Comment": null});
-      print("Student added successfully.");
-      print(students); // for testing
-      stdin.readLineSync();
+      print("Student added successfully. updated students list: $students"); //testing
       break;
     // case 2:
     //   record score
@@ -89,5 +87,5 @@ print("\n");
       print("Invalid choice. Please try again.");
   }
   }
-  while(choice != 8);
+  while(numChoice != 8);
 }
