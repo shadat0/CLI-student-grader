@@ -98,7 +98,7 @@ void main() {
 
         var selectedSubject = subjects[subjectChoice - 1];
 
-        // 3. Validate score with a while loop (must be 0–100)
+        // 3. Validating score with a while loop 
         int score = -1;
         while (score < 0 || score > 100) {
           print(
@@ -133,7 +133,7 @@ void main() {
 
         var selectedStudent = students[studentChoice - 1];
 
-        // 2. Validate bonus points with a while loop (must be 0–10)
+        // 2. Validating bonus points with a while loop
         int bonus = -1;
         while (bonus < 0 || bonus > 10) {
           print("Enter bonus points for ${selectedStudent["Name"]} (0-10):");
