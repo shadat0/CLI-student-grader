@@ -143,7 +143,53 @@ void main() {
           }
         }
 
-      // case 4 - 7 working on currently
+      case 4:
+        // 1. Show numbered list of students
+        print("--- Select a Student ---");
+        for (int i = 0; i < students.length; i++) {
+          print("${i + 1}. ${students[i]["Name"]}");
+        }
+        print("Enter student number:");
+        var commentStudentChoice = int.parse(stdin.readLineSync()!);
+
+        if (commentStudentChoice < 1 ||
+            commentStudentChoice > students.length) {
+          print("❌ Invalid student selection.");
+          break;
+        }
+
+        var commentStudent = students[commentStudentChoice - 1];
+
+        // 2. Prompt for a comment and making sure its nullable
+        print("Enter comment for ${commentStudent["Name"]}:");
+        String? comment = stdin.readLineSync();
+
+        // 3. Storing the comment
+        commentStudent["Comment"] = comment;
+
+        // 4. Displaying the comment
+        print(
+          "✅ Comment saved: ${commentStudent["Comment"]?.toUpperCase() ?? "No comment"}",
+        );
+        break;
+
+
+      case 5:
+        print("\n--- All Students ---");
+        for (var student in students) {
+          // bonus list building
+          var info = [
+            "📛 ${student["Name"]}",
+            "   Scores recorded: ${student["Scores"].length}",
+            if (student["Bonus"] != null) "   ⭐ Bonus: ${student["Bonus"]}",
+          ];
+          for (var line in info) {
+            print(line);
+          }
+        }
+        break;
+      //case 6-7 still working on it
+
       case 8:
         print("Exiting...");
         break;
