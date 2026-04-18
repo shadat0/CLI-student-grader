@@ -1,45 +1,44 @@
 import 'dart:io';
 
 void main() {
-
   // settings
   const appTitle = "Student Grader v1.0";
   print("==== $appTitle ====");
-  final subjects = ["Math", "Science", "English", "History"];
-  var choice;
-  int? numChoice;
+  final subjects = ["Math", "Science", "English"];
 
   // Student data
   List<Map<String, dynamic>> students = [
     {
-        "Name": "Fatima",
-        "Scores": [85,92,78,88],
-        "Bonus": null,
-        "Comment": null
+      "Name": "Fatima",
+      "Scores": [85, 92, 78],
+      "Bonus": null,
+      "Comment": null,
     },
     {
-        "Name": "Ali",
-        "Scores": [78, 85, 90, 82],
-        "Bonus": null,
-        "Comment": null
+      "Name": "Ali",
+      "Scores": [78, 85, 90],
+      "Bonus": null,
+      "Comment": null,
     },
     {
-        "Name": "Sara",
-        "Scores": [95, 90, 88, 92],
-        "Bonus": null,
-        "Comment": null
+      "Name": "Sara",
+      "Scores": [95, 90, 88],
+      "Bonus": null,
+      "Comment": null,
     },
     {
-        "Name": "Omar",
-        "Scores": [60, 75, 70, 65],
-        "Bonus": null,
-        "Comment": null
+      "Name": "Omar",
+      "Scores": [60, 75, 70],
+      "Bonus": null,
+      "Comment": null,
     },
   ];
 
-  // menu loop
-  do{
-  print('''
+  // Main menu
+  int choice;
+  do {
+    print("\n");
+    print('''
 
   1. Add Student
   2. Record Score
@@ -50,42 +49,108 @@ void main() {
   7. Class Summary
   8. Exit
 
-Please enter your choice: 
   ''');
-  
-  choice = stdin.readLineSync();
-numChoice = int.tryParse(choice ?? '');
-switch(numChoice){
-    case 1:
-      print("Add Student Name :");
-      String? name = stdin.readLineSync();
-      students.add({"Name": name, "Scores": [], "Bonus": null, "Comment": null});
-      print("Student added successfully. updated students list: $students"); //testing
-      break;
-    // case 2:
-    //   record score
-    //   break;
-    // case 3:
-    //   add bonus points
-    //   break;
-    // case 4:
-    //   add comment
-    //   break;
-    // case 5:
-    //   view all students
-    //   break;
-    // case 6:
-    //   view report card
-    //   break;
-    // case 7:
-    //   class summary
-    //   break;
-    case 8:
-      print("Exiting...");
-      break;
-    default:
-      print("Invalid choice. Please try again.");
-  }
-  }
-  while(numChoice != 8);
+
+    print("Choose an option: ");
+    choice = int.parse(stdin.readLineSync()!);
+
+    switch (choice) {
+      case 1:
+        print("Add Student Name :");
+        var name = stdin.readLineSync()!;
+        students.add({
+          "Name": name,
+          "Scores": [],
+          "Subjects": {...subjects},
+          "Bonus": null,
+          "Comment": null,
+        });
+        print("✅ Student - $name added successfully.");
+        break;
+      case 2:
+        // 1. Show numbered list of students
+        print("--- Select a Student ---");
+        for (int i = 0; i < students.length; i++) {
+          print("${i + 1}. ${students[i]["Name"]}");
+        }
+        print("Enter student number:");
+        var studentChoice = int.parse(stdin.readLineSync()!);
+
+        if (studentChoice < 1 || studentChoice > students.length) {
+          print("❌ Invalid student selection.");
+          break;
+        }
+
+        var selectedStudent = students[studentChoice - 1];
+
+        // 2. Show available subjects
+        print("\n--- Select a Subject ---");
+        for (int i = 0; i < subjects.length; i++) {
+          print("${i + 1}. ${subjects[i]}");
+        }
+        print("Enter subject number:");
+        var subjectChoice = int.parse(stdin.readLineSync()!);
+
+        if (subjectChoice < 1 || subjectChoice > subjects.length) {
+          print("❌ Invalid subject selection.");
+          break;
+        }
+
+        var selectedSubject = subjects[subjectChoice - 1];
+
+        // 3. Validate score with a while loop (must be 0–100)
+        int score = -1;
+        while (score < 0 || score > 100) {
+          print(
+            "Enter score for ${selectedStudent["Name"]} in $selectedSubject (0-100):",
+          );
+          score = int.parse(stdin.readLineSync()!);
+          if (score < 0 || score > 100) {
+            print("❌ Score must be between 0 and 100.");
+          }
+        }
+
+        // 4. Add the score to the student's scores list
+        selectedStudent["Scores"].add(score);
+        print(
+          "✅ Score $score added for ${selectedStudent["Name"]} in $selectedSubject!",
+        );
+        break;
+
+      case 3:
+        // 1. Show numbered list of students
+        print("--- Select a Student ---");
+        for (int i = 0; i < students.length; i++) {
+          print("${i + 1}. ${students[i]["Name"]}");
+        }
+        print("Enter student number:");
+        var studentChoice = int.parse(stdin.readLineSync()!);
+
+        if (studentChoice < 1 || studentChoice > students.length) {
+          print("❌ Invalid student selection.");
+          break;
+        }
+
+        var selectedStudent = students[studentChoice - 1];
+
+        // 2. Validate bonus points with a while loop (must be 0–10)
+        int bonus = -1;
+        while (bonus < 0 || bonus > 10) {
+          print("Enter bonus points for ${selectedStudent["Name"]} (0-10):");
+          bonus = int.parse(stdin.readLineSync()!);
+          if (bonus < 0 || bonus > 10) {
+            print("❌ Bonus points must be between 0 and 10.");
+          }
+        }
+
+      // case 4 - 7 working on currently
+      case 8:
+        print("Exiting...");
+        break;
+      default:
+        print("Invalid choice. Please try again.");
+    }
+  } while (choice != 8);
 }
+
+
