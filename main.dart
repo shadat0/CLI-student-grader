@@ -188,8 +188,142 @@ void main() {
           }
         }
         break;
-      //case 6-7 still working on it
+      case 6:
+        // 1. Show numbered list of students
+        print("--- Select a Student ---");
+        for (int i = 0; i < students.length; i++) {
+          print("${i + 1}. ${students[i]["Name"]}");
+        }
+        print("Enter student number:");
+        var reportChoice = int.parse(stdin.readLineSync()!);
+        //checking if choice less than 1 or more then the student number , using logical or operator
+        if (reportChoice < 1 || reportChoice > students.length) {
+          print("❌ Invalid student selection.");
+          break;
+        }
 
+        var reportStudent = students[reportChoice - 1];
+        List scores = reportStudent["Scores"];
+
+        if (scores.isEmpty) {
+          print("⚠️ No scores recorded for ${reportStudent["Name"]}.");
+          break;
+        }
+
+        // 2. Calculate raw average using a for loop
+        num sum = 0;
+        for (var s in scores) {
+          sum = sum + s;
+        }
+        double rawAvg = sum / scores.length;
+
+        // 3. Add bonus (using ??) and cap at 100
+        double finalAvg = rawAvg + (reportStudent["Bonus"] ?? 0);
+        if (finalAvg > 100) finalAvg = 100;
+
+        // 4. Assign grade letter using if / else if
+        String grade;
+        if (finalAvg >= 90) {
+          grade = "A";
+        } else if (finalAvg >= 80) {
+          grade = "B";
+        } else if (finalAvg >= 70) {
+          grade = "C";
+        } else if (finalAvg >= 60) {
+          grade = "D";
+        } else {
+          grade = "F";
+        }
+
+        // 5. Feedback using switch expression with pattern matching
+        String feedback = switch (grade) {
+          "A" => "Outstanding performance!",
+          "B" => "Good work, keep it up!",
+          "C" => "Satisfactory. Room to improve.",
+          "D" => "Needs improvement.",
+          "F" => "Failing. Please seek help.",
+          _ => "Unknown grade.",
+        };
+
+        // 6. Print formatted report card using multi-line string (using padRight() took ai help here to get it look beautiful and align the text)
+        print('''
+-------------------------------
+|       REPORT CARD           |
+-------------------------------
+|  Name:    ${reportStudent["Name"].toString().padRight(18)}|
+|  Scores:  ${scores.toString().padRight(18)}|
+|  Bonus:   +${(reportStudent["Bonus"] ?? 0).toString().padRight(17)}|
+|  Average: ${finalAvg.toStringAsFixed(1).padRight(18)}|
+|  Grade:   ${grade.padRight(18)}|
+|  Comment: ${(reportStudent["Comment"]?.toUpperCase() ?? "None").toString().padRight(18)}|
+-------------------------------
+📢 $feedback''');
+        break;
+      case 7:
+        print("\n--- Class Summary ---\n");
+
+        int totalStudents = students.length;
+        int passCount = 0;
+        double classTotal = 0;
+        double highestAvg = 0;
+        double lowestAvg = 101;
+        Set<String> gradeSet = {};
+
+        // Build student name list using collection for
+        var summaryLines = [for (var s in students) s["Name"].toString()];
+        print("All Students: $summaryLines");
+
+        // Compute stats for each student
+        for (var student in students) {
+          List scores = student["Scores"];
+
+          if (scores.isNotEmpty) {
+            // Sum scores using a simple for loop
+            num sum = 0;
+            for (var score in scores) {
+              sum = sum + score;
+            }
+            double avg = sum / scores.length;
+            double finalAvg = avg + (student["Bonus"] ?? 0);
+            if (finalAvg > 100) finalAvg = 100;
+
+            classTotal = classTotal + finalAvg;
+
+            // Logical && — count students who have scores and are passing
+            if (scores.isNotEmpty && finalAvg >= 60) passCount++;
+
+            // Track highest and lowest
+            if (finalAvg > highestAvg) highestAvg = finalAvg;
+            if (finalAvg < lowestAvg) lowestAvg = finalAvg;
+
+            // Assign grade and add to Set (duplicates are ignored automatically)
+            String grade;
+            if (finalAvg >= 90) {
+              grade = "A";
+            } else if (finalAvg >= 80) {
+              grade = "B";
+            } else if (finalAvg >= 70) {
+              grade = "C";
+            } else if (finalAvg >= 60) {
+              grade = "D";
+            } else {
+              grade = "F";
+            }
+            gradeSet.add(grade);
+          }
+        }
+
+        double classAvg = classTotal / totalStudents;
+
+        print("Total Students  : $totalStudents");
+        print("Class Average   : ${classAvg.toStringAsFixed(1)}");
+        print("Highest Average : ${highestAvg.toStringAsFixed(1)}");
+        print(
+          "Lowest Average  : ${lowestAvg == 101 ? "N/A" : lowestAvg.toStringAsFixed(1)}",
+        );
+        print("Passing Students: $passCount");
+        print("Grades in Class : $gradeSet");
+        break;
       case 8:
         print("Exiting...");
         break;
@@ -198,5 +332,3 @@ void main() {
     }
   } while (choice != 8);
 }
-
-
